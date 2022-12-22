@@ -1,6 +1,6 @@
 const { createServer }= require('@lhci/server');
 
-console.log("starting the server")
+console.log("starting server")
 
 createServer({
 port:9001,
