@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@lhci/server": "^0.3.0",
+    "@lhci/server": "^0.10.0",
     "mysql2": "^2.3.3"
   }
 }
