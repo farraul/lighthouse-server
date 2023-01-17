@@ -1,18 +1,11 @@
 const { createServer } = require('@lhci/server');
 const ApiClient = require('@lhci/utils/src/api-client.js');
 const express = require('express')
+const newProject = require('./src/new-project.js')
 
 
+const PORT = process.env.PORT || 3003
 const app = express()
-const port = process.env.PORT || 3003
-
-const newProject = {
-    projectName: 'prueba1',
-    externalURL: 'https://github.com/',
-    baseBranch: 'main',
-    slug: 'https://github.com/',
-    serverBaseUrl: 'http://localhost:9001'
-}
 
 /***Create lighthouse server ***/
 createServer({
@@ -29,13 +22,11 @@ createServer({
     console.log("error:", error)
 })
 
-
-app.listen(port, () => {
-    console.log(`API is running in the port: ${port}`)
+app.listen(PORT, () => {
+    console.log(`API is running in the port: ${PORT}`)
 })
-/*** Endpoint API to create new project in lighthouse server ***/
-/* http://localhost:3003/create-project */
 
+/*** Endpoint to create new project in lighthouse server ***/
 app.get('/create-project', (req, res) => {
 
     /**
@@ -52,7 +43,7 @@ app.get('/create-project', (req, res) => {
             name: newProject.projectName,
             externalUrl: newProject.projectExternalUrl,
             baseBranch: newProject.projectBaseBranch,
-            slug: '',
+            slug: newProject.slug,
         });
         res.send({
             'adminToken': project.adminToken,
