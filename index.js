@@ -29,8 +29,7 @@ createServer({
             console.error('Error de conexion: ' + err.stack);
             return;
         }
-
-        conexion.query("SELECT * FROM projects", function (err, result, fields) {
+        conexion.query("SELECT * FROM projects", function (err, result) {
             if (err) throw err;
             projects = result.map(project => project.name)
 
@@ -41,7 +40,7 @@ createServer({
                 }
 
                 if ((projects.some(findProject))) {
-                    console.log("Proyecto existe: ", confProject.projectName)
+                    console.log("Project exists: ", confProject.projectName)
                 }
                 else {
                     /**
@@ -56,12 +55,11 @@ createServer({
                         });
                         const creationProject = await api.createProject({
                             name: confProject.projectName,
-                            externalUrl: confProject.projectExternalUrl,
-                            baseBranch: confProject.projectBaseBranch,
-                            slug: confProject.slug,
+                            externalUrl: confProject.externalURL,
+                            baseBranch: confProject.baseBranch,
+                            slug: ''  // this property is dynamically generated server-side 
                         });
-                        console.log("Proyecto no existe, creando: ", creationProject)
-
+                        console.log("Project does not exist, creating:", creationProject)
                     }
                     createProject()
                 }
