@@ -1,9 +1,10 @@
 const mysql = require('mysql2');
+const configuration = require('./configuration.js')
+const bbdd = require(`./constants/${process.env.NODE_ENV}/bbdd.json`);
+const newProject = require('./new-project.js')
+let projects = [];
 const ApiClient = require('@lhci/utils/src/api-client.js');
 
-const constants = require('./constants.js')
-const bbdd = require(`./constants/${process.env.NODE_ENV}/bbdd.json`);
-let projects = [];
 
 var conexion = mysql.createConnection(bbdd);
 
@@ -19,32 +20,12 @@ module.exports = Object.preventExtensions({
                 if (err) throw err;
                 projects = result.map(project => project.name)
 
-                constants.forEach(confProject => {
+                configuration.forEach(confiProject => {
                     const findProject = (project) => {
-                        return project == confProject.projectName
+                        return project == confiProject.projectName
                     }
-                    if ((projects.some(findProject))) {
-                        console.log("Project exists: ", confProject.projectName)
-                    }
-                    else {
-                        /**
-                        * @param {LHCI.WizardCommand.Options} options
-                        * @return {Promise<void>}
-                        */
-                       
-                        (async (options) => {
-                            const api = new ApiClient({
-                                ...options,
-                                rootURL: confProject.serverBaseUrl
-                            });
-                            const creationProject = await api.createProject({
-                                name: confProject.projectName,
-                                externalUrl: confProject.externalURL,
-                                baseBranch: confProject.baseBranch,
-                                slug: ''  // this property is dynamically generated server-side 
-                            });
-                            console.log("Project does not exist, creating:", creationProject)
-                        })();
+                    if (projects.some(findProject)) { console.log("Project exists: ", confiProject.projectName) } else {
+                        newProject.newProject(confiProject)
                     }
                 })
             })
