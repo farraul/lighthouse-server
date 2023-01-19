@@ -1,15 +1,11 @@
 const mysql = require('mysql2');
-const configuration = require('./configuration.js')
+const configuration = require('./configuration.js');
 const bbdd = require(`./constants/${process.env.NODE_ENV}/bbdd.json`);
-const newProject = require('./new-project.js')
-let projects = [];
-const ApiClient = require('@lhci/utils/src/api-client.js');
-
+const { newProject, getToken } = require('./lighthouse.js')
 
 var conexion = mysql.createConnection(bbdd);
 
 module.exports = Object.preventExtensions({
-
     init() {
         conexion.connect(function (err) {
             if (err) {
@@ -18,16 +14,21 @@ module.exports = Object.preventExtensions({
             }
             conexion.query("SELECT * FROM projects", function (err, result) {
                 if (err) throw err;
+
                 projects = result.map(project => project.name)
 
                 configuration.forEach(confiProject => {
                     const findProject = (project) => {
                         return project == confiProject.projectName
                     }
-                    if (projects.some(findProject)) { console.log("Project exists: ", confiProject.projectName) } else {
-                        newProject.newProject(confiProject)
+
+                    if (projects.some(findProject)) {
+                        console.log("Project exists: ", confiProject.projectName);
+                    } else {
+                        newProject(confiProject)
                     }
                 })
+               // getToken(result);
             })
         });
     }
