@@ -1,9 +1,9 @@
 {
-    "port": 9001,
-    "storage": {
-        "storageMethod": "sql",
-        "sqlDialect": "mysql",
-        "sqlConnectionSsl": false,
-        "sqlConnectionUrl": "mysql://root@localhost:3306/lighthouse"
-    }
+  "port": 9001,
+  "storage": {
+    "storageMethod": "sql",
+    "sqlDialect": "mysql",
+    "sqlConnectionSsl": false,
+    "sqlConnectionUrl": "mysql://root@localhost:3306/lighthouse"
+  }
 }
