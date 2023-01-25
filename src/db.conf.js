@@ -3,7 +3,7 @@ const configuration = require('./configuration.js');
 const bbdd = require(`./constants/${process.env.NODE_ENV}/bbdd.json`);
 const { newProject, getProjects } = require('./lighthouse.js')
 
-var conexion = mysql.createConnection(bbdd);
+let conexion = mysql.createConnection(bbdd);
 
 module.exports = Object.preventExtensions({
   init() {
